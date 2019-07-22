@@ -7,14 +7,14 @@ if [[ "$(jq -r ".action" "$GITHUB_EVENT_PATH")" != "created" ]]; then
 	exit 78
 fi
 
-COMMENT=$(jq -r ".comment.body" "$GITHUB_EVENT_PATH")
+COMMENT='foo "/pipenv update"'
 
-echo "Checking if "$COMMENT" contains '$1' command..."
-if [[ $COMMENT =~ "/$1" ]]; then
+echo "Checking if '$COMMENT' contains '$1' command..."
+if [[ "$COMMENT" =~ "$1" ]]; then
   ARGS=$(echo "$COMMENT" | cut -d "\"" -f2 | cut -d "\"" -f1 | sed -e "s#^/$1 ##")
   echo "Passing arguments '$ARGS'"
   echo "$ARGS" > $GITHUB_WORKSPACE/.github/$1-args
 else
-  echo "'$1' not found in comment"
+  echo "Skippping, command not found in comment."
   exit 78
 fi
