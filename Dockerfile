@@ -9,7 +9,7 @@ LABEL "com.github.actions.description"="Common filters to stop exceution if comm
 LABEL "com.github.actions.icon"="filter"
 LABEL "com.github.actions.color"="gray-dark"
 
-RUN apk --no-cache add jq
+RUN apk --no-cache add jq bash
 
 ADD entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
