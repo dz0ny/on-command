@@ -7,7 +7,7 @@ if [[ "$(jq -r ".action" "$GITHUB_EVENT_PATH")" != "created" ]]; then
 	exit 78
 fi
 
-COMMENT='foo "/pipenv update"'
+COMMENT=$(jq -r ".comment.body" "$GITHUB_EVENT_PATH")
 
 echo "Checking if '$COMMENT' contains '$1' command..."
 if [[ "$COMMENT" =~ "$1" ]]; then
