@@ -1,11 +1,5 @@
 #!/usr/bin/env sh
 # shellcheck disable=SC2001,SC2002,SC2034,SC1090,SC2154
-cat $GITHUB_EVENT_PATH
-
-COMMENT=$(jq -r ".comment.body" "$GITHUB_EVENT_PATH")
-
-echo "Checking if "$COMMENT" contains '$1' command..."
-($COMMENT | grep -E "/$1") || exit 78
 
 # skip if not a new comment
 if [[ "$(jq -r ".action" "$GITHUB_EVENT_PATH")" != "created" ]]; then
@@ -13,7 +7,14 @@ if [[ "$(jq -r ".action" "$GITHUB_EVENT_PATH")" != "created" ]]; then
 	exit 78
 fi
 
-ARGS=$(echo "$COMMENT" | cut -d "\`" -f2 | cut -d "\`" -f1 | sed -e "s#^/$1##")
-echo "Passing arguments '$ARGS'"
+COMMENT=$(jq -r ".comment.body" "$GITHUB_EVENT_PATH")
 
-echo "$ARGS" > $GITHUB_WORKSPACE/.github/$1-args
+echo "Checking if "$COMMENT" contains '$1' command..."
+if [[ $COMMENT =~ "/$1" ]]; then
+  ARGS=$(echo "$COMMENT" | cut -d "\"" -f2 | cut -d "\"" -f1 | sed -e "s#^/$1 ##")
+  echo "Passing arguments '$ARGS'"
+  echo "$ARGS" > $GITHUB_WORKSPACE/.github/$1-args
+else
+  echo "'$1' not found in comment"
+  exit 78
+fi
