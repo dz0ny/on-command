@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 # shellcheck disable=SC2001,SC2002,SC2034,SC1090,SC2154
+cat $GITHUB_EVENT_PATH
 
 COMMENT=$(jq -r ".comment.body" "$GITHUB_EVENT_PATH")
 
