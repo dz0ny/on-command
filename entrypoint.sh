@@ -3,8 +3,8 @@
 
 COMMENT=$(jq -r ".comment.body" "$GITHUB_EVENT_PATH")
 
-echo "Checking if contains '$1' command..."
-($COMMENT | grep -E "$1") || exit 78
+echo "Checking if "$COMMENT" contains '$1' command..."
+($COMMENT | grep -E "/$1") || exit 78
 
 # skip if not a new comment
 if [[ "$(jq -r ".action" "$GITHUB_EVENT_PATH")" != "created" ]]; then
