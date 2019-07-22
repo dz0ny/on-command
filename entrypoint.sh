@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # shellcheck disable=SC2001,SC2002,SC2034,SC1090,SC2154
 
 # skip if not a new comment
