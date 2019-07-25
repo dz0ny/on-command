@@ -9,8 +9,8 @@ fi
 
 COMMENT=$(jq -r ".comment.body" "$GITHUB_EVENT_PATH")
 
-echo "Checking if '$COMMENT' contains '$1' command..."
-if [[ "$COMMENT" =~ ^$1 ]]; then
+echo "Checking if '$COMMENT' starts with '$1' command..."
+if [[ "$COMMENT" =~ ^\"/$1 ]]; then
   ARGS=$(echo "$COMMENT" | cut -d "\"" -f2 | cut -d "\"" -f1 | sed -e "s#^/$1 ##")
   echo "Passing arguments '$ARGS'"
   echo "$ARGS" > $GITHUB_WORKSPACE/.github/$1-args
